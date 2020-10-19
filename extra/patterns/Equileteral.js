@@ -13,14 +13,14 @@ function equilateral (x)
           a="";
 
     for(let j=i;j<=x;j++)
-    {
+     {
           a+=" ";
     }
 
     for (let z=i;z>0;z--)
      {     
          a+="* ";
-        }
+    }
     
     console.log(a);
 
