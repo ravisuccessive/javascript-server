@@ -19,7 +19,7 @@ function equilateral (x)
 
     for (let z=i;z>0;z--)
      {     
-         a+=" * ";
+         a+="* ";
         }
     
     console.log(a);
