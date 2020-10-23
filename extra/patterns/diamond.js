@@ -1,6 +1,6 @@
 
-n=process.argv[2];
-function diamond(x){
+let x;
+export default function diamond(x){
     let a= " "
 console.log("print a diamond with rows "+x);
 
@@ -25,4 +25,4 @@ a+="* ";
 console.log(a);
   }
 }
-diamond(n);
+//diamond(n);
