@@ -8,5 +8,14 @@
  }
  }
 
-
+export const users = [
+    {
+    traineeEmail: 'sumit.upadhyay@successive.tech',
+    reviewerEmail: 'chirag.arora@successive.tech',
+    },
+    {
+    traineeEmail: '@sumitsuccessive.tech',
+    reviewerEmail: '@chiragsuccesive.tech',
+    },
+    ];
 

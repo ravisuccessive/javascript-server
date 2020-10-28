@@ -1,21 +1,28 @@
-// let permissions =
-// {
-// 'getUsers': {
-// all: ['head-trainer'],
-// read : ['trainee', 'trainer'],
-// write : ['trainer'],
-// Delete: [],
-// }
-// }
-import {permissions} from "../constants"
+
+import {permissions} from "../constants.js"
 
 export default function hasPermission(moduleName,role,permissionType)
 {
-console.log(permissions[moduleName][permissionType].includes(role)); //using bracket operator
+    if((Object.keys(permissions)).includes(moduleName)){
+    if (permissions[moduleName].all.includes(role)){
+        console.log(`${role} has ${permissionType} permissions`);
+        return true;
+    }
+    else 
+    if (permissions[moduleName][permissionType].includes(role)){
+        console.log(`${role} has ${permissionType} permissions`);
+        return true;
+    }
+    else{
+        console.log(`${role} does not have ${permissionType} permissions`);
+        return false;
+    }
+}
+else{
+    console.log(`${moduleName} is not a valid module`)
+}
+
+
 
 }
 
-hasPermission('getUsers',"trainer","read");
-hasPermission('getUsers',"trainee","write");
-
-// hasPermissions("getProduct", "trainer", "delete");
