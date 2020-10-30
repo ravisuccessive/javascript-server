@@ -1,17 +1,10 @@
-let x;
-export default function equilateral (x)
-{
-      let a= " "
-    console.log("print a equilateral triangle with rows "+x);
-    for(let i=1;i<=x;i++){
-          a="";
-    for(let j=i;j<=x;j++){
-          a+=" ";
-    }
-    for (let z=i;z>0;z--){     
-         a+="* ";
-    }
-    console.log(a);
-    }
+export default function equilateral(n) {
+      let whilte_space = "";
+      let j = n;
+      for (let i = 1; i <= n; i++) {
+            whilte_space  = " ".repeat(j);
+            console.log(whilte_space, '* '.repeat(i));
+            whilte_space = "";
+            j--;
+      }
 }
-  // equilateral(process.argv[2])

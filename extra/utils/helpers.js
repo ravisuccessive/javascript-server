@@ -1,5 +1,5 @@
 export default function validateEmail(email) {
-    const pattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const regex =/\w+.\w+@successive.tech$/i;
     
-    return (pattern.test(email))
+    return (regex.test(email))
     }

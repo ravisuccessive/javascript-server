@@ -10,12 +10,12 @@
 
 export const users = [
     {
-    traineeEmail: 'sumit.upadhyay@successive.tech',
-    reviewerEmail: 'chirag.arora@successive.tech',
+    traineeEmail: 'ravi.singh@successive.tech',
+    reviewerEmail: 'yogesh.singh@successive.tech',
     },
     {
-    traineeEmail: '@sumitsuccessive.tech',
-    reviewerEmail: '@chiragsuccesive.tech',
+    traineeEmail: '@ravisuccessive.tech',
+    reviewerEmail: '@yogeshsuccesive.tech',
     },
     ];
 
