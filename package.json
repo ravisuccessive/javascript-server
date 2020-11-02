@@ -5,13 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "extra": "babel-node extra",
     "start": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
     "nodemon": "nodemon ./dist/index.js",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
     "lint:fix": "npm run lint --fix"
- },
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ravisuccessive/javascript-server.git"
