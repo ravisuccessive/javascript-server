@@ -1,6 +1,7 @@
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import { notFoundHandler, errorHandler } from './libs/routes';
+import mainRouter from './Server';
 
 class Server{
     private app
@@ -21,8 +22,10 @@ class Server{
             console.log("inside Second middleware");
             res.send("I am OK");
         });
-        this.app.use(notFoundHandler);
-        this.app.use(errorHandler);
+        app.use('/api', mainRouter);
+        app.use(notFoundHandler);
+        app.use(errorHandler);
+    
     }
 
     run(){

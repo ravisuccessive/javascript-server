@@ -1,5 +1,5 @@
 import Server from './Server';
-import config from './config/configuration';
-console.log("config is ", config);
-const server=new Server( { PORT:config.port});
+import configurations from './config/configuration';
+
+const server=new Server(configurations);
 server.bootstrap().run();
