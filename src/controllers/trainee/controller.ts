@@ -11,7 +11,7 @@ class traineeController {
 
     get(req, res, next) {
         try {
-            var console: Console
+            // var console: Console
             console.log("Inside get method of Trainee Controller");
 
             res.send({
@@ -31,7 +31,7 @@ class traineeController {
 
     create(req, res, next) {
         try {
-            var console: Console
+            // var console: Console
             console.log("Inside post method of Trainee Controller");
 
             res.send({
@@ -51,7 +51,7 @@ class traineeController {
 
     update(req, res, next) {
         try {
-            var console: Console
+            // var console: Console
             console.log("Inside update method of Trainee Controller");
 
             res.send({
@@ -70,7 +70,7 @@ class traineeController {
     }
     delete(req, res, next) {
         try {
-            var console: Console
+            // var console: Console
             console.log("Inside delete method of Trainee Controller");
 
             res.send({

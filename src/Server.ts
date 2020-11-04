@@ -1,58 +1,46 @@
-import * as express from "express";
-import * as bodyParser from "body-parser";
-import { notFoundHandler, errorHandler } from './libs/routes';
+import * as express from 'express';
+import * as bodyparser from 'body-parser';
+import { notFoundRoute , errorHandler } from './libs/routes';
+import mainRouter from './Router';
 
-class Server{
-    private app;
-    constructor(private config){
-        this.app=express()
+class Server {
+    app;
+    constructor(private config) {
+        this.app = express();
+
     }
+   public initBodyParser() {
+        this.app.use(bodyparser.json());
+    }
+
     bootstrap() {
-        this.setupRoutes()
+        this.initBodyParser();
+        this.setupRoutes();
         return this;
     }
-    public setupRoutes(){
-        const { app }=this;
-        app.use('/health-check',(req, res)=>{
-            console.log("inside Second middleware");
-            res.send("I am OK");
-        });
 
-        this.app.use(notFoundHandler);
-        this.app.use(errorHandler);
-        this.app.use((req, res, next) => {
-            next({
-                error: "Not Found",
-                code: 404
-                
-            })
-        })
-
-        this.app.use((err, req, res, next) => {
-            console.log(err);
-            res.json(
-                {
-                    "error ": err.error,
-                    status : err.code,
-                    message : err. message || "Error",
-                    timeStamp: new Date()
-                 
-                }
-            )
+   public setupRoutes() {
+        // const { app } = this;
+        this.app.use( '/health-check', ( req, res, next ) => {
+            res.send( 'I am Ok' );
+            next();
         });
+        this.app.use( '/api' , mainRouter );
+        this.app.use( notFoundRoute );
+        this.app.use( errorHandler );
         return this;
     }
-    public initBodyParser(){
-        this.app.use(bodyParser.json( {type : 'application/**json'}))
-    }
-    run(){
-        const {app, config:{port}}=this;
-        app.listen(port,(err)=>{
-            if (err) {
-                console.log( err );
+    run () {
+        const { app , config : {port}} = this;
+        app.listen( port , ( err ) => {
+            if ( err ) {
+            console.log( err );
             }
-            console.log(`App is running on port ${port}`);
-        })
+            console.log( `App is running on port ${ port }` );
+        });
+
     }
+
+
 }
 export default Server;
