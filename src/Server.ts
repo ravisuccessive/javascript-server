@@ -21,17 +21,18 @@ class Server{
             console.log("inside Second middleware");
             res.send("I am OK");
         });
-        return this;
+        this.app.use(notFoundHandler);
+        this.app.use(errorHandler);
     }
-    
+
     run(){
-        const {app, config:{PORT}}=this;
-        app.listen(PORT,(err)=>{
+        const {app, config:{port}}=this;
+        app.listen(port,(err)=>{
             if (err) {
                 console.log( err );
                 
             }
-            console.log(`App is running on port ${PORT}`);
+            console.log(`App is running on port ${port}`);
 
         })
     }
