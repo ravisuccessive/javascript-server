@@ -3,11 +3,15 @@ import * as bodyParser from "body-parser";
 import { notFoundHandler, errorHandler } from './libs/routes';
 
 class Server{
-    app
+    private app
     constructor(private config){
         this.app=express()
     }
+    public initBodyParser(){
+        this.app.use(bodyParser.json( {type : 'application/**json'}))
+    }
     bootstrap(){
+        this.initBodyParser()
         this.setupRouts()
         return this;
     }
@@ -17,33 +21,6 @@ class Server{
             console.log("inside Second middleware");
             res.send("I am OK");
         });
-
-        this.app.use(notFoundHandler);
-        this.app.use(errorHandler);
-        this.app.use((req, res, next) => {
-            next({
-                error: "Not Found",
-                code: 404
-                
-            })
-        })
-
-        this.app.use((err, req, res, next) => {
-            console.log(err);
-            res.json(
-                {
-                    "error ": err.error,
-                    status : err.code,
-                    message : err. message || "Error",
-                    timeStamp: new Date()
-                 
-                }
-            )
-        });
-        return this;
-    }
-    public initBodyParser(){
-        this.app.use(bodyParser.json( {type : 'application/**json'}))
     }
     run(){
         const {app, config:{PORT}}=this;
