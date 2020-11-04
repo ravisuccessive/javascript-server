@@ -1,7 +1,9 @@
 import { IConfig } from './IConfig';
-const envVars = require('dotenv').config()
-console.log("inside config",envVars);
-
-const config = envVars.parsed;
-export default config;
-Object.freeze(config);
+import { config } from 'dotenv';
+config();
+const envNames = config().parsed;
+const configurations = Object.freeze({
+port: envNames.PORT,
+nodeEnv: envNames.NODE_ENV,
+});
+export default configurations;
