@@ -8,6 +8,10 @@ class Server {
     private app;
     constructor(private config) {
         this.app = express();
+import * as express from "express";
+import * as bodyParser from "body-parser";
+import { notFoundHandler, errorHandler } from './libs/routes';
+import mainRouter from './router';
 
     }
    public initBodyParser() {
@@ -44,6 +48,20 @@ class Server {
                     //Database.disconnect();
                 }
             });
+        app.use('/api', mainRouter);
+        app.use(notFoundHandler);
+        app.use(errorHandler);
+    
+    }
+
+    run(){
+        const {app, config:{port}}=this;
+        app.listen(port,(err)=>{
+            if (err) {
+                console.log( err );
+                
+            }
+            console.log(`App is running on port ${port}`);
         })
         .catch(err => console.log(err));
         return this;
