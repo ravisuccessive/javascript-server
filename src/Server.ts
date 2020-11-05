@@ -1,10 +1,11 @@
 import * as express from 'express';
 import * as bodyparser from 'body-parser';
 import { notFoundRoute , errorHandler } from './libs/routes';
+import Database from './libs/Database';
 import mainRouter from './Router';
 
 class Server {
-    app;
+    private app;
     constructor(private config) {
         this.app = express();
 
@@ -20,7 +21,6 @@ class Server {
     }
 
    public setupRoutes() {
-        // const { app } = this;
         this.app.use( '/health-check', ( req, res, next ) => {
             res.send( 'I am Ok' );
             next();
@@ -30,15 +30,23 @@ class Server {
         this.app.use( errorHandler );
         return this;
     }
-    run () {
-        const { app , config : {port}} = this;
-        app.listen( port , ( err ) => {
-            if ( err ) {
-            console.log( err );
-            }
-            console.log( `App is running on port ${ port }` );
-        });
-
+    run() {
+        const { app, config: { PORT } } = this;
+        Database.open('mongodb://localhost:27017/express-training')
+        .then((res) => {
+            console.log('Succesfully connected to Mongo');
+            app.listen( PORT, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log(`App is running on port ${process.env.PORT}`);
+                    Database.disconnect();
+                }
+            });
+        })
+        .catch(err => console.log(err));
+        return this;
     }
 
 
