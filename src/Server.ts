@@ -41,7 +41,7 @@ class Server {
                 }
                 else {
                     console.log(`App is running on port ${process.env.PORT}`);
-                    Database.disconnect();
+                    //Database.disconnect();
                 }
             });
         })
