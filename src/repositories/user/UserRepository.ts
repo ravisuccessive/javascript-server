@@ -13,7 +13,7 @@ export default class UserRepository {
         return userModel.find(query, projection, options);
     }
     public create(data: any): Promise<IUserModel> {
-    console.log('UserRepository:: create', data);
+        console.log('UserRepository:: create', data);
         const id = UserRepository.generateObjectId();
         const model = new userModel({
             _id: id,
