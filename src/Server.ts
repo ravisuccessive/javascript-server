@@ -8,20 +8,15 @@ class Server {
     private app;
     constructor(private config) {
         this.app = express();
-import * as express from "express";
-import * as bodyParser from "body-parser";
-import { notFoundHandler, errorHandler } from './libs/routes';
-import mainRouter from './router';
-
     }
-   public initBodyParser() {
-        this.app.use(bodyparser.json());
-    }
-
-    bootstrap() {
+   
+   bootstrap() {
         this.initBodyParser();
         this.setupRoutes();
         return this;
+    }
+    public initBodyParser() {
+        this.app.use(bodyparser.json());
     }
 
    public setupRoutes() {
@@ -34,39 +29,22 @@ import mainRouter from './router';
         this.app.use( errorHandler );
         return this;
     }
-    run() {
-        const { app, config: { PORT } } = this;
+    run(){ 
+        const { app, config: { port } } = this;
         Database.open('mongodb://localhost:27017/express-training')
         .then((res) => {
             console.log('Succesfully connected to Mongo');
-            app.listen( PORT, (err) => {
+            app.listen( port, (err) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    console.log(`App is running on port ${process.env.PORT}`);
-                    //Database.disconnect();
+                    console.log(`App is running on port ${ port }`);
+               
                 }
             });
-        app.use('/api', mainRouter);
-        app.use(notFoundHandler);
-        app.use(errorHandler);
-    
+        
+        });
     }
-
-    run(){
-        const {app, config:{port}}=this;
-        app.listen(port,(err)=>{
-            if (err) {
-                console.log( err );
-                
-            }
-            console.log(`App is running on port ${port}`);
-        })
-        .catch(err => console.log(err));
-        return this;
-    }
-
-
 }
-export default Server;
+      export default Server;
