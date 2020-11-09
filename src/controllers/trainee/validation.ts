@@ -8,9 +8,9 @@ const Validation = {
             errorMessage: 'Skip is invalid'
         },
         limit: {
-            required: false,
+            required: true,
             default: 10,
-            number: false,
+            number: true,
             in: ['query'],
             errorMessage: 'Limit is invalid'
         }

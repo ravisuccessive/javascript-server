@@ -1,4 +1,3 @@
-
 import * as express from 'express';
 import * as bodyparser from 'body-parser';
 import { notFoundRoute , errorHandler } from './libs/routes';
@@ -20,7 +19,6 @@ class Server {
     }
 
    public setupRoutes() {
-        // const { app } = this;
         this.app.use( '/health-check', ( req, res, next ) => {
             res.send( 'I am Ok' );
             next();
