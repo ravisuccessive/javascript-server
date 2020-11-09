@@ -8,13 +8,13 @@ class Server{
     constructor(private config){
         this.app=express()
     }
-    public initBodyParser(){
-        this.app.use(bodyParser.json( {type : 'application/**json'}))
-    }
     bootstrap(){
         this.initBodyParser()
         this.setupRouts()
         return this;
+    }
+    public initBodyParser(){
+        this.app.use(bodyParser.json( {type : 'application/**json'}))
     }
     public setupRouts(){
         const { app }=this;
@@ -33,7 +33,6 @@ class Server{
         app.listen(port,(err)=>{
             if (err) {
                 console.log( err );
-                
             }
             console.log(`App is running on port ${port}`);
 
