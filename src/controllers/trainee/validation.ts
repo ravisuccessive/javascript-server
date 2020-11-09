@@ -1,4 +1,4 @@
-const config = {
+const Validation = {
     get: {
         skip: {
             required: false,
@@ -27,7 +27,7 @@ const config = {
         },
         name: {
             required: true,
-            regex: '',
+            regex: '/[a-z, ]+/',
             in: ['body'],
             errorMessage: 'Name is required'
         }
@@ -53,4 +53,4 @@ const config = {
     }
 };
 
-export default config;
+export default Validation;

@@ -4,19 +4,18 @@ import { notFoundRoute , errorHandler } from './libs/routes';
 import mainRouter from './Router';
 
 class Server {
-    app;
+   private app;
     constructor(private config) {
         this.app = express();
 
     }
-   public initBodyParser() {
-        this.app.use(bodyparser.json());
-    }
-
     bootstrap() {
         this.initBodyParser();
         this.setupRoutes();
         return this;
+    }
+    public initBodyParser() {
+        this.app.use(bodyparser.json());
     }
 
    public setupRoutes() {
