@@ -1,16 +1,16 @@
-const config = {
+const Validation = {
     get: {
         skip: {
             required: false,
             default: 0,
-            number: true,
+            number: false,
             in: ['query'],
             errorMessage: 'Skip is invalid'
         },
         limit: {
             required: false,
             default: 10,
-            number: true,
+            number: false,
             in: ['query'],
             errorMessage: 'Limit is invalid'
         }
@@ -27,7 +27,7 @@ const config = {
         },
         name: {
             required: true,
-            regex: '',
+            regex: '/[a-z, ]+/',
             in: ['body'],
             errorMessage: 'Name is required'
         }
@@ -53,4 +53,4 @@ const config = {
     }
 };
 
-export default config;
+export default Validation;
