@@ -30,7 +30,7 @@ class Server {
         return this;
     }
     run(){ 
-        const { app, config: { port } } = this;
+        const { app, config:{port,  mongo: MONGO_URL}} = this;
         Database.open('mongodb://localhost:27017/express-training')
         .then((res) => {
             console.log('Succesfully connected to Mongo');
