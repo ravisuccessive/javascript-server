@@ -19,9 +19,10 @@ class Server {
     public initBodyParser() {
         this.app.use(bodyparser.json());
     }
-    public setupRoutes() {
-        this.app.use('/health-check', (req, res, next) => {
-            res.send('I am Ok');
+
+   public setupRoutes() {
+        this.app.use( '/health-check', ( req, res, next ) => {
+            res.send( 'I am Ok' );
             next();
         });
         this.app.use('/api', mainRouter);
@@ -30,21 +31,20 @@ class Server {
         return this;
     }
     run() {
-        const { app, config: { PORT } } = this;
-        Database.open('mongodb://localhost:27017/express-training')
-            .then((res) => {
-                console.log('Succesfully connected to Mongo');
-                app.listen(PORT, (err) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    else {
-                        console.log(`App is running on port ${process.env.PORT}`);
-                        //Database.disconnect();
-                    }
-                });
-            })
-            .catch(err => console.log(err));
+        const { app, config: { port, mongoURL} } = this;
+        Database.open(mongoURL)
+        .then((res) => {
+            app.listen( port, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log(`App is running on port ${ port }`);
+                    Database.disconnect();
+                }
+            });
+        })
+        .catch(err => console.log(err));
         return this;
     }
 

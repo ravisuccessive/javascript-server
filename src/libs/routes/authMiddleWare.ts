@@ -1,23 +1,39 @@
+import {configurations} from '../../config';
+import {hasPermission} from './Permission';
 import * as jwt from 'jsonwebtoken';
-
-import { hasPermission } from './Permission';
 
 export default (module, permissionType) => (req, res, next) => {
     try {
         const token = req.headers['authorization'];
-        const decorderUser = jwt.verify(token, 'qwertyuiopasdfghjklzxcvbnm123456');
-        console.log(hasPermission(module, decorderUser.role, permissionType))
-        if (hasPermission(module, decorderUser.role, permissionType)) {
+        if(!token) {
+            next({
+                err: "unauthorized",
+                msz: "token not found",
+                status: 403
+            })
         }
-        else {
-            throw Error;
+        const key= configurations.secretKey
+        const decodedUser = jwt.verify(token, key);
+        if(!decodedUser || !decodedUser.role) {
+            next({
+                err: "unauthorized",
+                msz: "role is undefined",
+                status: 403
+            })
+        }
+        if (!hasPermission(module, decodedUser.role, permissionType)) {
+            next({
+                err: "unauthorized",
+                msz: "user doesn't have permissions",
+                status: 403
+            })
         }
         next();
     }
     catch (err) {
-        res.send({
-            error: 'Unauthorized',
-            code: 403,
-        })
+            next({
+                err: "unauthorized",
+                status: 403
+            })
     }
-}
+ } 

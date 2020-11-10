@@ -12,10 +12,10 @@ class database {
                 reject(err);
                 return;
             }
-            Seeds();
-            resolve(null);
+            resolve();
+            console.log('Succesfully connected to Mongo');
         });
-    });
+     });
     }
     static disconnect() {
         console.log('Inside Disconnect method');
