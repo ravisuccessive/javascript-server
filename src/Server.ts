@@ -1,4 +1,3 @@
-
 import * as express from 'express';
 import * as bodyparser from 'body-parser';
 import { notFoundRoute , errorHandler } from './libs/routes';
@@ -31,16 +30,15 @@ class Server {
         return this;
     }
     run() {
-        const { app, config: { PORT } } = this;
+        const { app, config: { port} } = this;
         Database.open('mongodb://localhost:27017/express-training')
         .then((res) => {
-            console.log('Succesfully connected to Mongo');
-            app.listen( PORT, (err) => {
+            app.listen( port, (err) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    console.log(`App is running on port ${process.env.PORT}`);
+                    console.log(`App is running on port ${ port }`);
                     Database.disconnect();
                 }
             });
