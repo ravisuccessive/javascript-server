@@ -30,8 +30,8 @@ class Server {
         return this;
     }
     run() {
-        const { app, config: { port} } = this;
-        Database.open('mongodb://localhost:27017/express-training')
+        const { app, config: { port, mongoURL} } = this;
+        Database.open(mongoURL)
         .then((res) => {
             app.listen( port, (err) => {
                 if (err) {
