@@ -1,4 +1,3 @@
-
 import * as express from 'express';
 import * as bodyparser from 'body-parser';
 import { notFoundRoute, errorHandler } from './libs/routes';
@@ -9,9 +8,9 @@ class Server {
     private app;
     constructor(private config) {
         this.app = express();
-
     }
-    bootstrap() {
+   
+   bootstrap() {
         this.initBodyParser();
         this.setupRoutes();
         return this;
@@ -30,6 +29,7 @@ class Server {
         this.app.use(errorHandler);
         return this;
     }
+
     run() {
         const { app, config: { port, mongoURL} } = this;
         Database.open(mongoURL)
@@ -47,7 +47,5 @@ class Server {
         .catch(err => console.log(err));
         return this;
     }
-
-
 }
-export default Server;
+      export default Server;

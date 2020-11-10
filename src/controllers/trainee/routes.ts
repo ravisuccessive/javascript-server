@@ -1,4 +1,3 @@
-
 import { Router } from 'express';
 import TraineeController from './controller';
 import validationHandler from '../../libs/routes/validationHandler';
@@ -15,4 +14,5 @@ traineeRouter.route('/:id')
     .delete(authMiddleWare('getUsers', 'delete'), validationHandler(Validation.Delete), TraineeController.delete);
 
 export default traineeRouter;
+
 
