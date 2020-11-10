@@ -13,7 +13,7 @@ export default (module, permissionType) => (req, res, next) => {
         }
         const key= configurations.secretKey
         const decodedUser = jwt.verify(token, key);
-        if(!decodedUser.role ) {
+        if(!decodedUser || !decodedUser.role) {
             next({
                 err: "unauthorized",
                 msz: "role is undefined",
