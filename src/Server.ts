@@ -1,42 +1,44 @@
-import * as express from "express";
-import * as bodyParser from "body-parser";
-import { notFoundHandler, errorHandler } from './libs/routes';
-import mainRouter from './router';
+import * as express from 'express';
+import * as bodyparser from 'body-parser';
+import { notFoundRoute , errorHandler } from './libs/routes';
+import mainRouter from './Router';
 
-class Server{
-    private app
-    constructor(private config){
-        this.app=express()
+class Server {
+   private app;
+    constructor(private config) {
+        this.app = express();
+
     }
-    bootstrap(){
-        this.initBodyParser()
-        this.setupRouts()
+    bootstrap() {
+        this.initBodyParser();
+        this.setupRoutes();
         return this;
     }
-    public initBodyParser(){
-        this.app.use(bodyParser.json( {type : 'application/**json'}))
+    public initBodyParser() {
+        this.app.use(bodyparser.json());
     }
-    public setupRouts(){
-        const { app }=this;
-        app.use('/health-check',(req, res)=>{
-            console.log("inside Second middleware");
-            res.send("I am OK");
+
+   public setupRoutes() {
+        this.app.use( '/health-check', ( req, res, next ) => {
+            res.send( 'I am Ok' );
+            next();
         });
-        app.use('/api', mainRouter);
-        app.use(notFoundHandler);
-        app.use(errorHandler);
-    
+        this.app.use( '/api' , mainRouter );
+        this.app.use( notFoundRoute );
+        this.app.use( errorHandler );
+        return this;
     }
-
-    run(){
-        const {app, config:{port}}=this;
-        app.listen(port,(err)=>{
-            if (err) {
-                console.log( err );
+    run () {
+        const { app , config : {port}} = this;
+        app.listen( port , ( err ) => {
+            if ( err ) {
+            console.log( err );
             }
-            console.log(`App is running on port ${port}`);
+            console.log( `App is running on port ${ port }` );
+        });
 
-        })
     }
+
+
 }
 export default Server;
