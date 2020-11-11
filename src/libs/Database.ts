@@ -14,18 +14,18 @@ import SeedData from './SeedData';
                 reject(err);
                 return;
             }
+            console.log('Database connected');
             SeedData();
             resolve();
-            console.log('Succesfully connected to Mongo');
         });
      });
     }
     static disconnect() {
-        console.log('Inside Disconnect method');
-        mongoose.disconnect(err =>{
+         mongoose.disconnect(err =>{
             if(err) {
                 console.log(err);
             }
+            console.log('Database Disconnected');
         });
     }
 }
