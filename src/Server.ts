@@ -8,9 +8,9 @@ class Server {
     private app;
     constructor(private config) {
         this.app = express();
+
     }
-   
-   bootstrap() {
+    bootstrap() {
         this.initBodyParser();
         this.setupRoutes();
         return this;
@@ -29,22 +29,22 @@ class Server {
         this.app.use( errorHandler );
         return this;
     }
-    run(){ 
-        const { app, config: { port } } = this;
-        Database.open('mongodb://localhost:27017/express-training')
+    run() {
+        const { app, config: { port, mongoURL} } = this;
+        Database.open(mongoURL)
         .then((res) => {
-            console.log('Succesfully connected to Mongo');
             app.listen( port, (err) => {
                 if (err) {
                     console.log(err);
                 }
                 else {
                     console.log(`App is running on port ${ port }`);
-               
+                    Database.disconnect();
                 }
             });
-        
-        });
+        })
+        .catch(err => console.log(err));
+        return this;
     }
 }
       export default Server;

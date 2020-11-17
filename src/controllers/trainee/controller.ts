@@ -11,8 +11,10 @@ class traineeController {
 
     get(req, res, next) {
         try {
-           res.status(200).send({
-         message: "Trainee fetched successfully",
+            console.log("Inside get method of Trainee Controller");
+
+            res.status(200).send({
+                message: "Trainee fetched successfully",
                 data: [
                     {
                         name: "Trainee",
@@ -28,7 +30,9 @@ class traineeController {
 
     create(req, res, next) {
         try {
-             res.status(200).send({
+            console.log("Inside post method of Trainee Controller");
+
+            res.status(200).send({
                 message: "Trainee created successfully",
                 data: [
                     {
@@ -45,6 +49,8 @@ class traineeController {
 
     update(req, res, next) {
         try {
+            console.log("Inside update method of Trainee Controller");
+
             res.status(200).send({
 
                 message: "Trainee updated successfully",
@@ -62,7 +68,9 @@ class traineeController {
     }
     delete(req, res, next) {
         try {
-             res.status(200).send({
+            console.log("Inside delete method of Trainee Controller");
+
+            res.status(200).send({
                 message: "Trainee deleted successfully",
                 data: [
                     {
