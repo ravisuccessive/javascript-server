@@ -21,10 +21,6 @@ export default class UserRepository {
         });
         return model.save();
     }
-    // public update (data: any): Promise<IUserModel> {
-    // console.log('UserRepository:: update', data);
-    // return userModel.update(data);
-    // }
     public count() {
         return userModel.countDocuments();
     }

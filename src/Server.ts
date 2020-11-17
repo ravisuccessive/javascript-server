@@ -1,6 +1,6 @@
 import * as express from 'express';
 import * as bodyparser from 'body-parser';
-import { notFoundRoute , errorHandler } from './libs/routes';
+import { notFoundRoute, errorHandler } from './libs/routes';
 import Database from './libs/Database';
 import mainRouter from './Router';
 
@@ -8,9 +8,9 @@ class Server {
     private app;
     constructor(private config) {
         this.app = express();
-
     }
-    bootstrap() {
+   
+   bootstrap() {
         this.initBodyParser();
         this.setupRoutes();
         return this;
@@ -24,9 +24,9 @@ class Server {
             res.send( 'I am Ok' );
             next();
         });
-        this.app.use( '/api' , mainRouter );
-        this.app.use( notFoundRoute );
-        this.app.use( errorHandler );
+        this.app.use('/api', mainRouter);
+        this.app.use(notFoundRoute);
+        this.app.use(errorHandler);
         return this;
     }
     run() {
@@ -36,10 +36,10 @@ class Server {
             app.listen( port, (err) => {
                 if (err) {
                     console.log(err);
+                    Database.disconnect();
                 }
                 else {
                     console.log(`App is running on port ${ port }`);
-                    Database.disconnect();
                 }
             });
         })

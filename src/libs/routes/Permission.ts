@@ -1,16 +1,25 @@
-import { permissions } from './Constants';
-
-export function hasPermission(moduleName, role, permissionType) {
-    if (permissions[moduleName].all.includes(role)) {
-        console.log("The " + role + " has permission to " + permissionType);
+export default function hasPermission1( moduleName , role , permissionType ) {
+    let type ;
+    console.log('Module Name is', moduleName);
+    console.log('permission type is',permissionType);
+    console.log('role is',role);
+    const { all , read , write , Delete } = moduleName ;
+    if ( permissionType === 'all' )
+    type = all ;
+    if ( permissionType === 'read' )
+    type = read ;
+    if ( permissionType === 'write' )
+    type = write ;
+    if ( permissionType === 'Delete' )
+    type = Delete ;
+    
+    if ( role === 'head-trainer' ) {
+    return true ;
     }
     else {
-        const permission = permissions[moduleName][permissionType].includes(role);
-        if (permission) {
-            return true;
-        }
-        else {
-            return false;
-        }
+    if ( type.includes (role) )
+    return true;
+    else
+    return false;
     }
-};
+    }
