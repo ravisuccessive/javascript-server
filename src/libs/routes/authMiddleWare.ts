@@ -1,8 +1,10 @@
 import {configurations} from '../../config';
 import {hasPermission} from './Permission';
 import * as jwt from 'jsonwebtoken';
+
 export default (module, permissionType) => (req, res, next) => {
     try {
+        console.log(module);
         const token = req.headers['authorization'];
         if(!token) {
             next({
