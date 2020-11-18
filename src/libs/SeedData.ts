@@ -3,22 +3,22 @@ import UserRepository from '../repositories/user/UserRepository';
 const userRepository: UserRepository = new UserRepository();
 export default () => {
     userRepository.count()
-        .then(res => {
+        .then((res) => {
             if (res === 0) {
-                console.log('Data seeding in progress');
+                console.log('Inserting Data');
                 userRepository.create({
-                    name: 'head-trainer',
-                    email: 'headtrainer@successivetech',
+                    name: 'Head-Trainer',
+                    email: 'head.trainer@successive.tech',
                     role: 'head-trainer',
-                    password: 'training@123'
+                    password: 'helloworld456'
                 });
                 userRepository.create({
-                    name: 'trainer',
-                    email: 'trainer@successivetech',
+                    name: 'Trainer',
+                    email: 'trainer@successive.tech',
                     role: 'trainer',
-                    password: 'training@123'
+                    password: 'helloworld123'
                 });
             }
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
 };
