@@ -1,81 +1,71 @@
-class traineeController {
-    static instance: traineeController
+import { Request, Response, NextFunction } from 'express';
+import UserRepositories from '../../repositories/user/UserRepository';
 
+class TraineeController {
+    private userRepository;
+    constructor() {
+        this.userRepository = new UserRepositories();
+    }
+    static instance: TraineeController;
     static getInstance() {
-        if (traineeController.instance) {
-            return traineeController.instance
+        if (TraineeController.instance) {
+            return TraineeController.instance;
         }
-        traineeController.instance = new traineeController();
-        return traineeController.instance;
+        TraineeController.instance = new TraineeController();
+        return TraineeController.instance;
     }
-
-    get(req, res, next) {
+    public get = async (req: Request, res: Response, next: NextFunction ) => {
         try {
-           res.status(200).send({
-         message: "Trainee fetched successfully",
-                data: [
-                    {
-                        name: "Trainee",
-                        address: "Noida"
-                    }
-                ]
-            });
-        }
-        catch (err) {
-            console.log("Inside err", err);
-        }
-    }
-
-    create(req, res, next) {
-        try {
-             res.status(200).send({
-                message: "Trainee created successfully",
-                data: [
-                    {
-                        name: "Trainee",
-                        address: "Noida"
-                    }
-                ]
-            });
-        }
-        catch (err) {
-            console.log("Inside err", err);
-        }
-    }
-
-    update(req, res, next) {
-        try {
+            const extractedData = await this.userRepository.findAll(req.body, {}, {});
             res.status(200).send({
-
-                message: "Trainee updated successfully",
-                data: [
-                    {
-                        name: "Trainee",
-                        address: "Noida"
-                    }
-                ]
+                message: 'trainee fetched successfully',
+                data: [extractedData],
+                status: 'success',
             });
-        }
-        catch (err) {
-            console.log("Inside err", err);
+        } catch (err) {
+            console.log('error is ', err);
         }
     }
-    delete(req, res, next) {
+    public create = async (req: Request, res: Response, next: NextFunction ) => {
         try {
-             res.status(200).send({
-                message: "Trainee deleted successfully",
+            this.userRepository.userCreate(req.body);
+            res.status(200).send({
+                message: 'trainee created successfully',
+                data: [req.body],
+                status: 'success',
+            });
+        } catch (err) {
+            console.log('error is ', err);
+        }
+    }
+    public update = async (req: Request, res: Response, next: NextFunction ) => {
+        try {
+            this.userRepository.userUpdate(req.body);
+            res.status(200).send({
+                message: 'trainee updated successfully',
+                data: [req.body]
+            });
+        } catch (err) {
+            console.log('error is ', err);
+        }
+    }
+    public delete = async (req: Request, res: Response, next: NextFunction ) => {
+        try {
+            const id = req.params.id;
+            this.userRepository.delete(id);
+            res.status(200).send({
+                message: 'trainee deleted successfully',
                 data: [
                     {
-                        name: "Trainee",
-                        address: "Noida"
+                        Id: req.params.id
                     }
-                ]
+                ],
+                status: 'success',
             });
-        }
-        catch (err) {
-            console.log("Inside err", err);
+        } catch (err) {
+            console.log('error is ', err);
         }
     }
 }
 
-export default traineeController.getInstance()
+export default TraineeController.getInstance();

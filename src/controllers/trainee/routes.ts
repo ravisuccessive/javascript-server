@@ -1,23 +1,16 @@
-import * as express from 'express';
 import { Router } from 'express';
 import TraineeController from './controller';
 import validationHandler from '../../libs/routes/validationHandler';
 import Validation from './validation';
 import { authMiddleWare } from '../../libs/routes';
-const traineeRoutes = express.Router();
-import {permissions,} from '../../libs/routes/Constants';
-
-
 
 const traineeRouter = Router();
 traineeRouter.route('/')
-    .get(authMiddleWare('getUsers', 'read'), validationHandler(Validation.get), TraineeController.get)
-    .post(authMiddleWare('getUsers', 'write'), validationHandler(Validation.create), TraineeController.create)
-    .put(authMiddleWare('getUsers', 'all'), validationHandler(Validation.update), TraineeController.update)
+    .get(TraineeController.get)
+    .post(TraineeController.create)
+    .put(TraineeController.update);
 
 traineeRouter.route('/:id')
-    .delete(authMiddleWare('getUsers', 'delete'), validationHandler(Validation.Delete), TraineeController.delete);
+    .delete(validationHandler(Validation.Delete), TraineeController.delete);
 
 export default traineeRouter;
-
-

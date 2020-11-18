@@ -1,41 +1,63 @@
-import {configurations} from '../../config';
-import hasPermission from './Permission';
 import * as jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+import { default as hasPermissions } from '../routes/Permission';
+import validation from '../../controllers/user/validation';
+import UserRepositories from '../../repositories/user/UserRepository';
 
-export default (module, permissionType) => (req, res, next) => {
+export default (module, permission) => async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log(module);
-        const token = req.headers['authorization'];
-        if(!token) {
-            next({
-                err: "unauthorized",
-                msz: "token not found",
+        let decodeUser: any;
+        const authorization = 'authorization';
+        const secretKey = "secretKey" ;
+        const token = req.headers[authorization];
+        if (!token) {
+            next ({
+                message: 'Token not found',
+                error: 'Authentication Failed',
                 status: 403
-            })
+            });
         }
-        const key= configurations.secretKey
-        const decodedUser = jwt.verify(token, key);
-        req.userData = decodedUser;
-        if(!decodedUser || !decodedUser.result.role) {
+        decodeUser = jwt.verify(token, secretKey);
+        const { email, password } = decodeUser;
+        if (!email || !password) {
             next({
-                err: "unauthorized",
-                msz: "role is undefined",
+                message: 'Email or Password not in token',
+                error: 'Authentication failed',
                 status: 403
-            })
+            });
         }
-        if (!hasPermission(module, decodedUser.result.role, permissionType)) {
+        const userRepository = new UserRepositories();
+        const data = await userRepository.findOne({email, password});
+        if (!data) {
             next({
-                err: "unauthorized",
-                msz: "user doesn't have permissions",
+                message: 'User is empty',
+                error: 'Authetication failed',
                 status: 403
-            })
+            });
         }
-        next();
+        if (!data.role) {
+            next({
+                message: 'role not found',
+                error: 'Authentication Failed',
+                status: 403
+            });
+            return;
+        }
+        if (!hasPermissions(module, data.role, permission)) {
+            return next({
+                message: `${data.role} does not have ${permission} permission in ${module}`,
+                error: 'unauthorized',
+                status: 403
+            });
+        }
+        res.locals.userData = data;
+    next();
     }
     catch (err) {
-            next({
-                err: "unauthorized",
-                status: 403
-            })
+        next({
+            message: 'User is Invalid',
+            error: 'Uthentication Failed',
+            status: 403
+        });
     }
- } 
+};
