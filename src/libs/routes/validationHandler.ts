@@ -1,89 +1,60 @@
-import { NextFunction, Request, Response } from 'express';
-
-
-export default (config) => (req: Request, res: Response, next: NextFunction) => {
-    const errors = [];
-    console.log('Inside ValidationHandler Middleware');
-    console.log(req.body);
-    console.log(req.query);
-    console.log(Object.keys(req.query).length);
-    const keys = Object.keys(config);
-    keys.forEach((key) => {
-        const obj = config[key];
-        console.log('key is', key);
-        const values = obj.in.map((val) => {
-            return req[val][key];
+import { Request, Response, NextFunction } from 'express';
+export default (Validation) => (req: Request, res: Response, next: NextFunction) => {
+    const error = [];
+    Object.keys(Validation).forEach((keys) => {
+        const inObject = Validation[keys];
+        inObject.in.forEach(inside => {
+            let value = req[inside][keys];
+            const a = {
+                key: '',
+                location: '',
+                errorMessage: ''
+            };
+            if ((inObject.required) && !(value)) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = inObject.errorMessage || `${keys} is required`;
+                error.push(a);
+                return;
+            }
+            value = value || inObject.default;
+            if (!value) {
+                return;
+            }
+            if ((inObject.number) && !(Number.isInteger(Number(value)))) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = inObject.errorMessage || `${keys}'s type is not number`;
+                error.push(a);
+                return;
+            }
+            if ((inObject.string) && !(typeof value === 'string')) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = inObject.errorMessage || `${keys}'s type is not string`;
+                error.push(a);
+                return;
+            }
+            const regex = inObject.regex;
+            if ((regex) && !regex.test(value)) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = inObject.errorMessage || `${keys} is invalid`;
+                error.push(a);
+                return;
+            }
+            if (inObject.isObject && (!(typeof value === 'object') || !(Object.entries(value).length))) {
+                a.key = keys;
+                a.location = inside;
+                a.errorMessage = `${keys} is invalid`;
+                error.push(a);
+                return;
+            }
+            console.log(`inside ${keys} values are ${value}`);
         });
-
-        // Checking for In i.e Body or Query
-        console.log('body is', req[obj.in])
-        console.log('body', Object.keys(req[obj.in]).length);
-        if (Object.keys(req[obj.in]).length === 0) {
-            errors.push({
-                message: `Values should be passed through ${obj.in}`,
-                status: 400
-            })
-        }
-
-        // Checking for required
-        console.log('values is', values)
-        if (obj.required) {
-            if (isNull(values[0])) {
-                errors.push({
-                    message: `${key} is required`,
-                    status: 404
-                })
-            }
-        }
-        if (obj.string) {
-            if (!(typeof (values[0]) === 'string')) {
-                errors.push({
-                    message: `${key} Should be a String`,
-                    status: 404
-                })
-            }
-        }
-        if (obj.isObject) {
-            if (!(typeof (values) == 'object')) {
-                errors.push({
-                    message: `${key} Should be an object`,
-                    status: 404
-                })
-            }
-        }
-        if (obj.regex) {
-            const regex = obj.regex;
-            if (!regex.test(values[0])) {
-                errors.push({
-                    message: `${key} is not valid expression`,
-                    status: 400,
-                });
-            }
-        }
-        if (obj.default) {
-            if (values[0] === '') {
-                values[0] === obj.default;
-            }
-        }
-        if (obj.number) {
-            if (isNaN(values[0]) || values[0] === undefined) {
-                errors.push({
-                    message: `${key}  must be an number`,
-                    status: 400,
-                });
-            }
-        }
-
-    })
-    if (errors.length > 0) {
-        res.status(400).send({ errors });
+    });
+    if (error.length) {
+        return res.status(400).send(error);
     }
-    else {
-        next();
-    }
+    next();
 };
-
-function isNull(obj) {
-    const a = (obj === undefined || obj === null);
-    return a;
-}

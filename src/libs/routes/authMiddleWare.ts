@@ -1,5 +1,5 @@
 import {configurations} from '../../config';
-import hasPermission from './Permission';
+import {hasPermission} from './Permission';
 import * as jwt from 'jsonwebtoken';
 
 export default (module, permissionType) => (req, res, next) => {

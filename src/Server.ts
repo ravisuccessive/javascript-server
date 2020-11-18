@@ -29,7 +29,6 @@ class Server {
         this.app.use(errorHandler);
         return this;
     }
-
     run() {
         const { app, config: { port, mongoURL} } = this;
         Database.open(mongoURL)
