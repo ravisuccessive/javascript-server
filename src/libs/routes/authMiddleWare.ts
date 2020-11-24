@@ -8,26 +8,26 @@ export default (module, permission) => async (req: Request, res: Response, next:
     try {
         let decodeUser: any;
         const authorization = 'authorization';
-        const secretKey = "secretKey";
+        const secretKey = 'secretKey';
         const token = req.headers[authorization];
         if (!token) {
-            next({
+            next ({
                 message: 'Token not found',
                 error: 'Authentication Failed',
                 status: 403
             });
         }
         decodeUser = jwt.verify(token, secretKey);
-        const { email, password } = decodeUser;
-        if (!email || !password) {
+        const { email } = decodeUser;
+        if (!email) {
             next({
-                message: 'Email or Password not in token',
+                message: 'Email  not in token',
                 error: 'Authentication failed',
                 status: 403
             });
         }
         const userRepository = new UserRepositories();
-        const data = await userRepository.findOne({ email, password });
+        const data = await userRepository.findOne({email});
         if (!data) {
             next({
                 message: 'User is empty',
@@ -51,7 +51,7 @@ export default (module, permission) => async (req: Request, res: Response, next:
             });
         }
         res.locals.userData = data;
-        next();
+    next();
     }
     catch (err) {
         next({

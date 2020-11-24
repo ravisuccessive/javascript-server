@@ -3,6 +3,9 @@ import config  from './validation';
 import * as jwt from 'jsonwebtoken';
 import UserRepositories from '../../repositories/user/UserRepository';
 import { payLoad } from '../../libs/routes/Constants';
+import IRequest from '../../IRequest';
+import * as bcrypt from 'bcrypt';
+import Validation from './validation';
 
 class UserController {
     static instance: UserController;
@@ -27,34 +30,37 @@ class UserController {
             console.log('error is ', err);
         }
     }
-    login(req: Request, res: Response, next: NextFunction ) {
+    async login(req: Request, res: Response, next: NextFunction ) {
         try {
             const userRepositories = new UserRepositories();
             const { email, password } = req.body;
-            Object.assign(payLoad , {email, password});
-            userRepositories.findOne({email, password})
-                .then((data) => {
-                    if (data) {
-                        const secret = 'secretKey';
-                        const tokenGenerated = jwt.sign(payLoad, secret);
-                        res.status(200).send({
-                            message: 'Logged in successfully',
-                            data: [
-                                {
-                                    token: tokenGenerated
-                                }
-                            ],
-                            status: 'success',
-                        });
-                    }
-                })
-                .catch((err) => {
-                    next ({
-                        message: 'invalid email or password',
-                        error: 'Authentication Failed',
-                        status: 403
-                    });
+            Object.assign(payLoad , {email});
+            const userData = await userRepositories.findOne({email});
+            if (!userData) {
+                next ({
+                    message: 'invalid email',
+                    error: 'Authentication Failed',
+                    status: 403
                 });
+            }
+            if (!bcrypt.compare(password, userData.password)) {
+                next({
+                    message: 'invalid password',
+                    error: 'Authentication Failed',
+                    status: 403
+                });
+            }
+            const secret = 'secretKey';
+            const tokenGenerated = jwt.sign(payLoad, secret, {expiresIn: '900s'});
+            res.status(200).send({
+                message: 'Logged in successfully',
+                data: [
+                    {
+                        token: tokenGenerated
+                    }
+                ],
+                status: 'success',
+            });
         } catch (err) {
             console.log('error is ', err);
         }

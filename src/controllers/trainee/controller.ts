@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import UserRepositories from '../../repositories/user/UserRepository';
+import * as bcrypt from 'bcrypt';
 
 class TraineeController {
     private userRepository;
@@ -28,6 +29,8 @@ class TraineeController {
     }
     public create = async (req: Request, res: Response, next: NextFunction ) => {
         try {
+            const pass = await bcrypt.hash(req.body.password, 10);
+            req.body.password = pass;
             this.userRepository.userCreate(req.body);
             res.status(200).send({
                 message: 'trainee created successfully',

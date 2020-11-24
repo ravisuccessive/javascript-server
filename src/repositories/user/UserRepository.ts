@@ -2,11 +2,7 @@ import * as mongoose from 'mongoose';
 import { userModel } from './UserModel';
 import IUserModel from './IUserModel';
 import VersionableRepository from '../versionable/VersionableRepository';
-
 export default class UserRepositories extends VersionableRepository<IUserModel, mongoose.Model<IUserModel>> {
-    getUser(arg0: { email: any; }) {
-        throw new Error('Method not implemented.');
-    }
 
     public static generateObjectId() {
         return String(mongoose.Types.ObjectId());

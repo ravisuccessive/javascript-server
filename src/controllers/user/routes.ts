@@ -4,20 +4,19 @@ import authMiddleWare from '../../libs/routes/authMiddleWare';
 import { permissions } from '../../libs/routes/Constants';
 import validationHandler from '../../libs/routes/validationHandler';
 import Validation from './validation';
-const UserRouter = express.Router();
+const userRouter = express.Router();
 
-UserRouter.route('/')
-.get( UserController.get)
-.post( UserController.create)
-.put( UserController.update)
-.delete( UserController.delete);
+userRouter.route('/me')
+    .get(authMiddleWare('getUsers', 'read'), validationHandler(Validation.get), UserController.profile);
+userRouter.route('/login')
+    .post(validationHandler(Validation.create), UserController.login);
+userRouter.route('/')
+    .get(authMiddleWare('getUsers', 'read'), validationHandler(Validation.get), UserController.get)
+    .post(authMiddleWare('getUsers', 'write'), validationHandler(Validation.create), UserController.create)
+    .put(authMiddleWare('getUsers', 'all'), validationHandler(Validation.update), UserController.update)
+    .delete(authMiddleWare('getUsers', 'delete'), validationHandler(Validation.delete), UserController.delete);
 
-UserRouter.route('/me')
-.get(authMiddleWare ( permissions.getUsers, 'read' ), UserController.profile);
+userRouter.route('/:id')
+    .delete(authMiddleWare('getUsers', 'delete'), validationHandler(Validation.delete), UserController.delete);
 
-UserRouter.route('/login')
-.post( validationHandler ( Validation.login) , UserController.login );
-
-export default UserRouter;
-
-
+export default userRouter;
