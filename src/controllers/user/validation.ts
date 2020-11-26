@@ -37,7 +37,7 @@ const Validation = {
         }
     },
     update: {
-        originalId: {
+        id: {
             required: true,
             string: true,
             in: ['body']

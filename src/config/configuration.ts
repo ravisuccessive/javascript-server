@@ -5,7 +5,7 @@ const envNames = config().parsed;
 const configurations = Object.freeze({
 port: envNames.PORT,
 nodeEnv: envNames.NODE_ENV,
-secretKey: envNames.SECRET_KEY,
+secretKey: envNames.secretKey,
 mongoURL:envNames.MONGO_URL
 
 });
