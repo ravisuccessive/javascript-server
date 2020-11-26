@@ -15,14 +15,16 @@ export default (module, permissionType) => (req, res, next) => {
         }
         const key= configurations.secretKey
         const decodedUser = jwt.verify(token, key);
-        if(!decodedUser || !decodedUser.role) {
-            next({
-                err: "unauthorized",
-                msz: "role is undefined",
-                status: 403
-            })
-        }
-        if (!hasPermission(module, decodedUser.role, permissionType)) {
+        req.userData = decodedUser;
+        const { result: { role = ''} = {} } = decodedUser
+       if(!decodedUser || !role) {
+           next({
+               err: "unauthorized",
+               msz: "role is undefined",
+               status: 403
+           })
+       }
+       if (!hasPermission(module, role, permissionType)) {
             next({
                 err: "unauthorized",
                 msz: "user doesn't have permissions",

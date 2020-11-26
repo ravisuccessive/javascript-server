@@ -5,7 +5,7 @@ import validationHandler from '../../libs/routes/validationHandler';
 import Validation from './validation';
 import { authMiddleWare } from '../../libs/routes';
 const traineeRoutes = express.Router();
-import {permissions,} from '../../libs/routes/Constants';
+import { permissions, } from '../../libs/routes/Constants';
 
 
 
