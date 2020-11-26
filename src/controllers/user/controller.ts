@@ -32,7 +32,7 @@ class UserController {
     }
     create(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log('Inside post method of Trainee');
+            console.log('Inside post method of User');
             res.send({
                 message: 'User created succefully',
                 data: [{
@@ -49,9 +49,9 @@ class UserController {
     }
     update(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log('Inside put method of Trainee');
+            console.log('Inside put method of User');
             res.send({
-                message: 'Trainee updated succefully',
+                message: 'User updated succefully',
                 data: [{
                     name: 'user1',
 
@@ -66,9 +66,9 @@ class UserController {
     }
     delete(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log('Inside delete method of Trainee');
+            console.log('Inside delete method of User');
             res.send({
-                message: 'Trainee deleted succefully',
+                message: 'User deleted succefully',
                 data: [{
                     name: 'user1',
 
@@ -87,32 +87,26 @@ class UserController {
             const { email, password } = req.body;
 
             userModel.findOne({ email: req.body.email }, (err, result) => {
-                if (result) {
-                    if (password === result.password) {
-                        console.log('result is', result.password);
-                        const token = jwt.sign({
-                            result
-                        }, 'qwertyuiopasdfghjklzxcvbnm123456');
-                        console.log(token);
-                        res.send({
-                            data: token,
-                            message: 'Login Permited',
-                            status: 200
-                        });
-                    }
-                    else {
-                        res.send({
-                            message: 'Password Doesnt match',
-                            status: 400
-                        });
-                    }
-                }
-                else {
+                if(!result){
                     res.send({
-                        message: 'Email is not Registered',
-                        status: 404
+                     message: 'Email is not Registered',
+                     status: 404
                     });
-                }
+                 }
+                 const { password } = result;
+                 if (password !== result.password) {
+                     res.send({
+                         message: 'Password Doesnt match',
+                         status: 400
+                     });
+                 }
+                 console.log('result is', result.password);
+                 const token = jwt.sign({ result }, 'qwertyuiopasdfghjklzxcvbnm123456');
+                 res.send({
+                          data: token,
+                          message: 'Login Permited',
+                          status: 200
+                 });
             });
         }
         catch (err) {

@@ -17,7 +17,7 @@ class database {
                 }
                 SeedData();
                 resolve();
-                console.log('Succesfully connected to Mongo');
+                console.log('Database Connected');
             });
         });
     }
