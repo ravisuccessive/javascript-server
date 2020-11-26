@@ -13,7 +13,7 @@ export default (module, permissionType) => (req, res, next) => {
                 status: 403
             })
         }
-        const key= configurations.SECRETKEY
+        const key= configurations.secretKey
         const decodedUser = jwt.verify(token, key);
         req.userData = decodedUser;
         const { result: { role = ''} = {} } = decodedUser

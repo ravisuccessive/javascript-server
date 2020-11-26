@@ -3,9 +3,9 @@ import { config } from 'dotenv';
 config();
 const envNames = config().parsed;
 const configurations = Object.freeze({
-    PORT: envNames.PORT,
+    port: envNames.PORT,
     nodeEnv: envNames.NODE_ENV,
-    SECRETKEY: envNames.SECRETKEY,
+    secretKey: envNames.SECRETKEY,
     mongoURL: envNames.MONGO_URL
 
 });

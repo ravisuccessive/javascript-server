@@ -110,7 +110,7 @@ class UserController {
             });
         }
         catch (err) {
-            res.send(err);
+            console.log(err,'err');
         }
     }
     me(req: IRequest, res: Response, next: NextFunction) {

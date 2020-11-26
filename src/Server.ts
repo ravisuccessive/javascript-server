@@ -30,17 +30,17 @@ class Server {
         return this;
     }
     run() {
-        const { app, config: { PORT, mongoURL} } = this;
+        const { app, config: { port, mongoURL} } = this;
         Database.open(mongoURL)
         .then((res) => {
         console.log('Succesfully connected to Mongo');  
-            app.listen( PORT, (err) => {
+            app.listen( port, (err) => {
                 if (err) {
                     console.log(err);
                     Database.disconnect();
                 }
                 else {
-                    console.log(`App is running on port ${ PORT }`);
+                    console.log(`App is running on port ${ port }`);
                 }
             });
         })
