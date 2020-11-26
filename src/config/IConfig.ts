@@ -2,7 +2,7 @@ interface IConfig{
     PORT : number;
     NODE_ENV : String;
     mongoURL: String;
-    SECRETKEY: string;
+    secretKey: string;
 
 }
 export { IConfig };
