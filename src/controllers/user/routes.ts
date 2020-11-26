@@ -9,7 +9,7 @@ const userRouter = express.Router();
 userRouter.route('/me')
     .get(authMiddleWare('getUsers', 'read'), validationHandler(Validation.get), UserController.profile);
 userRouter.route('/login')
-    .post(validationHandler(Validation.create), UserController.login);
+    .post( UserController.login);
 userRouter.route('/')
     .get(authMiddleWare('getUsers', 'read'), validationHandler(Validation.get), UserController.get)
     .post(authMiddleWare('getUsers', 'write'), validationHandler(Validation.create), UserController.create)

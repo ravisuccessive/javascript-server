@@ -15,7 +15,6 @@ export default async function seed() {
         userRepository.create(seedData1);
         userRepository.create(seedData2);
         } catch (err) {
-        console.log(err);
         }
     }
 }

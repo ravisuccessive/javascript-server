@@ -11,6 +11,7 @@ traineeRouter.route('/')
     .put(authMiddleWare('getUsers', 'write'), validationHandler(Validation.update), TraineeController.update);
 
 traineeRouter.route('/:id')
-    .delete(authMiddleWare('getUsers', 'delete'), validationHandler(Validation.delete), TraineeController.delete);
+.delete((req, res, next) => { console.log("------inside first md----"); next()},authMiddleWare('getUsers', 'delete'), validationHandler(Validation.delete), TraineeController.delete);
+
 
 export default traineeRouter;

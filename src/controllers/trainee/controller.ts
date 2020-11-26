@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction, response } from 'express';
 import UserRepositories from '../../repositories/user/UserRepository';
 import * as bcrypt from 'bcrypt';
 
@@ -55,14 +55,10 @@ class TraineeController {
     public delete = async (req: Request, res: Response, next: NextFunction ) => {
         try {
             const id = req.params.id;
-            this.userRepository.delete(id);
+           const result = await this.userRepository.delete(id);
             res.status(200).send({
                 message: 'trainee deleted successfully',
-                data: [
-                    {
-                        Id: req.params.id
-                    }
-                ],
+                data: result,
                 status: 'success',
             });
         } catch (err) {
