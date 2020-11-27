@@ -4,7 +4,7 @@ import { seedData1, seedData2 } from './routes/Constants';
 
 const userRepository: UserRepository = new UserRepository();
 export default async function seed() {
-    const count = await userRepository.count();
+    const count = await userRepository.countData();
     if (count === 0) {
         try {
         console.log('Seeding Data');
@@ -14,6 +14,7 @@ export default async function seed() {
         seedData2.password = hashPass2;
         userRepository.create(seedData1);
         userRepository.create(seedData2);
+        // tslint:disable-next-line: no-empty
         } catch (err) {
         }
     }

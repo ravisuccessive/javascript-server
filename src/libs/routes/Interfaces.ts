@@ -7,5 +7,5 @@ type access = {
 
 export interface  IPermissions {
     getUsers: access ;
-    
+
 }

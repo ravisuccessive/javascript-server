@@ -25,7 +25,7 @@ export default class UserRepositories extends VersionableRepository<IUserModel, 
         return model.save();
     }
 
-    public count() {
+    public countData() {
         return userModel.countDocuments();
     }
 }

@@ -1,4 +1,4 @@
-import Validation from '../../controllers/user/validation'
+import Validation from '../../controllers/user/validation';
 import { hasPermission } from './Permission';
 import * as jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';

@@ -17,14 +17,20 @@ class TraineeController {
     }
     public get = async (req: Request, res: Response, next: NextFunction ) => {
         try {
-            const extractedData = await this.userRepository.findAll(req.body, {}, {});
+            const userRepository = new UserRepositories();
+            const sort = {};
+            sort[`${req.query.sortedBy}`] = req.query.sortedOrder;
+            console.log(sort);
+            const extractedData = await userRepository.findAll(req.body).sort(sort).skip(Number(req.query.skip)).limit(Number(req.query.limit));
             res.status(200).send({
                 message: 'trainee fetched successfully',
+                totalCount: await userRepository.count(req.body),
+                count: extractedData.length,
                 data: [extractedData],
                 status: 'success',
             });
         } catch (err) {
-            console.log('error is ', err);
+            console.log('error: ', err);
         }
     }
     public create = async (req: Request, res: Response, next: NextFunction ) => {

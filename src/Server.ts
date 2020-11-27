@@ -9,8 +9,8 @@ class Server {
     constructor(private config) {
         this.app = express();
     }
-   
-   bootstrap() {
+
+    bootstrap() {
         this.initBodyParser();
         this.setupRoutes();
         return this;
@@ -19,9 +19,9 @@ class Server {
         this.app.use(bodyparser.json());
     }
 
-   public setupRoutes() {
-        this.app.use( '/health-check', ( req, res, next ) => {
-            res.send( 'I am Ok' );
+    public setupRoutes() {
+        this.app.use('/health-check', (req, res, next) => {
+            res.send('I am Ok');
             next();
         });
         this.app.use('/api', mainRouter);
@@ -30,22 +30,22 @@ class Server {
         return this;
     }
     run() {
-        const { app, config: { port, mongoURL} } = this;
+        const { app, config: { port, mongoURL } } = this;
         Database.open(mongoURL)
-        .then((res) => {
-        console.log('Succesfully connected to Mongo');  
-            app.listen( port, (err) => {
-                if (err) {
-                    console.log(err);
-                    Database.disconnect();
-                }
-                else {
-                    console.log(`App is running on port ${ port }`);
-                }
-            });
-        })
-        .catch(err => console.log(err));
+            .then((res) => {
+                console.log('Succesfully connected to Mongo');
+                app.listen(port, (err) => {
+                    if (err) {
+                        console.log(err);
+                        Database.disconnect();
+                    }
+                    else {
+                        console.log(`App is running on port ${port}`);
+                    }
+                });
+            })
+            .catch(err => console.log(err));
         return this;
     }
 }
-      export default Server;
+export default Server;

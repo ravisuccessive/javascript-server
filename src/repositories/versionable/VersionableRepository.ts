@@ -22,16 +22,16 @@ export default class VersionableRepository <D extends mongoose.Document, M exten
         return await model.save();
     }
     public count(query: any): Query<number> {
-        const finalQuery = {deletedAt: undefined, ...query};
+        const finalQuery = {deletedAt: undefined};
         return this.model.count(finalQuery);
     }
     public findOne(query: any): DocumentQuery<D, D> {
         const finalQuery = {deletedAt: undefined, ...query};
         return this.model.findOne(finalQuery);
     }
-    public findAll(query: any, projection: any, options: any): DocumentQuery<D[], D> {
+    public findAll(query: any, projection: any = {}, options: any = {}): DocumentQuery<D[], D> {
         const finalQuery = {deletedAt: undefined, ...query};
-        return this.model.find(finalQuery, projection, options);
+        return this.model.find();
     }
     public invalidate(id: string): DocumentQuery<D, D> {
         const query: any = { originalId: id, deletedAt: { $exists: false} };

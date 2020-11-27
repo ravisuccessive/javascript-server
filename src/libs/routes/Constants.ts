@@ -1,4 +1,4 @@
-import { IPermissions } from "./Interfaces";
+import { IPermissions } from './Interfaces';
 
 export const permissions: IPermissions = {
     getUsers: {

@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import SeedData from './SeedData';
 
-class database {
+class Database {
     static open(mongoURL) {
         return new Promise((resolve, reject) => {
             const value = {
@@ -31,4 +31,4 @@ class database {
         });
     }
 }
-export default database;
+export default Database;
