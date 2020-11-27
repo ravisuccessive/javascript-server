@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-export default (Validation) => (req: Request, res: Response, next: NextFunction ) => {
+export default (Validation) => (req: Request, res: Response, next: NextFunction) => {
     const error = [];
     Object.keys(Validation).forEach((keys) => {
         const inObject = Validation[keys];
         inObject.in.forEach(inside => {
             let value = req[inside][keys];
             const a = {
-                key : '',
+                key: '',
                 location: '',
                 errorMessage: ''
             };
@@ -55,5 +55,5 @@ export default (Validation) => (req: Request, res: Response, next: NextFunction 
     if (error.length) {
         return res.status(400).send(error);
     }
-    next ();
+    next();
 };
