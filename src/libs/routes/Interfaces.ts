@@ -5,7 +5,7 @@ type access = {
     Delete: string[];
 };
 
-export interface  IPermission {
+export interface  IPermissions {
     getUsers: access ;
-    
+
 }

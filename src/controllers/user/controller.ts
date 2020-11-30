@@ -1,7 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
-import { userModel } from '../../repositories/user/UserModel';
+import config  from './validation';
 import * as jwt from 'jsonwebtoken';
+import UserRepositories from '../../repositories/user/UserRepository';
+import { payLoad } from '../../libs/routes/Constants';
 import IRequest from '../../IRequest';
+import * as bcrypt from 'bcrypt';
+import Validation from './validation';
+
 class UserController {
     static instance: UserController;
 
@@ -9,115 +14,117 @@ class UserController {
         if (UserController.instance) {
             return UserController.instance;
         }
+
         UserController.instance = new UserController();
         return UserController.instance;
     }
 
-    get(req: Request, res: Response, next: NextFunction) {
+    profile(req: Request, res: Response, next: NextFunction ) {
         try {
-            console.log('Inside get method of User');
-            res.send({
-                message: 'User fetched succefully',
-                data: [{
-                    name: 'user1',
-
-                },
-                {
-                    name: 'user2',
-                }]
+            res.status(200).send({
+                message: 'Profile fetched successfully',
+                data: [res.locals.userData],
+                status: 'success',
             });
         } catch (err) {
-            console.log('Inside err', err);
+            console.log('error is ', err);
         }
     }
-    create(req: Request, res: Response, next: NextFunction) {
+    async login(req: Request, res: Response, next: NextFunction ) {
         try {
-            console.log('Inside post method of User');
-            res.send({
-                message: 'User created succefully',
-                data: [{
-                    name: 'user1',
-
-                },
-                {
-                    name: 'user2',
-                }]
-            });
-        } catch (err) {
-            console.log('Inside err', err);
-        }
-    }
-    update(req: Request, res: Response, next: NextFunction) {
-        try {
-            console.log('Inside put method of User');
-            res.send({
-                message: 'User updated succefully',
-                data: [{
-                    name: 'user1',
-
-                },
-                {
-                    name: 'user2',
-                }]
-            });
-        } catch (err) {
-            console.log('Inside err', err);
-        }
-    }
-    delete(req: Request, res: Response, next: NextFunction) {
-        try {
-            console.log('Inside delete method of User');
-            res.send({
-                message: 'User deleted succefully',
-                data: [{
-                    name: 'user1',
-
-                },
-                {
-                    name: 'user2',
-                }]
-            });
-        } catch (err) {
-            console.log('Inside err', err);
-        }
-    }
-
-    login(req: IRequest, res: Response, next: NextFunction) {
-        try {
+            const userRepositories = new UserRepositories();
             const { email, password } = req.body;
-
-            userModel.findOne({ email: req.body.email }, (err, result) => {
-                if(!result){
-                    res.send({
-                     message: 'Email is not Registered',
-                     status: 404
-                    });
-                 }
-                 const { password } = result;
-                 if (password !== result.password) {
-                     res.send({
-                         message: 'Password Doesnt match',
-                         status: 400
-                     });
-                 }
-                 console.log('result is', result.password);
-                 const token = jwt.sign({ result }, 'qwertyuiopasdfghjklzxcvbnm123456');
-                 res.send({
-                          data: token,
-                          message: 'Login Permited',
-                          status: 200
-                 });
+            Object.assign(payLoad , {email});
+            const userData = await userRepositories.findOne({email});
+            if (!userData) {
+                next ({
+                    message: 'invalid email',
+                    error: 'Authentication Failed',
+                    status: 403
+                });
+            }
+            if (!bcrypt.compare(password, userData.password)) {
+                next({
+                    message: 'invalid password',
+                    error: 'Authentication Failed',
+                    status: 403
+                });
+            }
+            const secret = 'secretKey';
+            const tokenGenerated = jwt.sign(payLoad, secret, {expiresIn: '900s'});
+            res.status(200).send({
+                message: 'Logged in successfully',
+                data: [
+                    {
+                        token: tokenGenerated
+                    }
+                ],
+                status: 'success',
             });
-        }
-        catch (err) {
-            console.log(err,'err');
+        } catch (err) {
+            console.log('error is ', err);
         }
     }
-    me(req: IRequest, res: Response, next: NextFunction) {
-        const data = req.userData;
-        res.json({
-            data
-        });
+    get(req: Request, res: Response, next: NextFunction ) {
+        try {
+            res.status(200).send({
+                message: 'User fetched successfully',
+                data: [
+                    {
+                        name: 'User1',
+                        address: 'Noida',
+                    }
+                ]
+            });
+        } catch (err) {
+            console.log('error is ', err);
+        }
+    }
+    create(req: Request, res: Response, next: NextFunction ) {
+        try {
+            res.status(200).send({
+                message: 'User created successfully',
+                data: [
+                    {
+                        name: 'User2',
+                        address: 'Delhi',
+                    }
+                ]
+            });
+        } catch (err) {
+            console.log('error is ', err);
+        }
+    }
+    update(req: Request, res: Response, next: NextFunction ) {
+        try {
+            res.status(200).send({
+                message: 'User updated successfully',
+                data: [
+                    {
+                        name: 'User3',
+                        address: 'Noida',
+                    }
+                ]
+            });
+        } catch (err) {
+            console.log('error is ', err);
+        }
+    }
+    delete(req: Request, res: Response, next: NextFunction ) {
+        try {
+            res.status(200).send({
+                message: 'User deleted successfully',
+                data: [
+                    {
+                        name: 'User4',
+                        address: 'Faridabad',
+                    }
+                ],
+                status: 'success',
+            });
+        } catch (err) {
+            console.log('error is ', err);
+        }
     }
 }
 
