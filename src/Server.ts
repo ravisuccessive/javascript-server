@@ -3,6 +3,8 @@ import * as bodyparser from 'body-parser';
 import { notFoundRoute, errorHandler } from './libs/routes';
 import Database from './libs/Database';
 import mainRouter from './Router';
+import * as swaggerJsDoc from 'swagger-jsdoc';
+import * as swaggerUI from 'swagger-ui-express';
 
 class Server {
     private app;
@@ -18,6 +20,28 @@ class Server {
     public initBodyParser() {
         this.app.use(bodyparser.json());
     }
+    initSwagger = () => {
+        const options = {
+            definition: {
+                info: {
+                    title: 'JavaScript-Server API Swagger',
+                    version: '1.0.0',
+                },
+                securityDefinitions: {
+                    Bearer: {
+                        type: 'apiKey',
+                        name: 'Authorization',
+                        in: 'headers'
+                    }
+                }
+            },
+            basePath: '/api',
+            swagger: '4.1',
+            apis: ['./src/controllers/**/routes.ts'],
+        };
+        const swaggerSpec = swaggerJsDoc(options);
+        return swaggerSpec;
+    }
 
     public setupRoutes() {
         this.app.use('/health-check', (req, res, next) => {
@@ -25,6 +49,7 @@ class Server {
             next();
         });
         this.app.use('/api', mainRouter);
+        this.app.use('/swagger', swaggerUI.serve, swaggerUI.setup(this.initSwagger()));
         this.app.use(notFoundRoute);
         this.app.use(errorHandler);
         return this;
