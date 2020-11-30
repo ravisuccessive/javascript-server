@@ -16,7 +16,7 @@ class Database {
                     return;
                 }
                 SeedData();
-                resolve();
+                resolve(undefined);
                 console.log('Database Connected');
             });
         });
