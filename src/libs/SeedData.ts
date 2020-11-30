@@ -1,8 +1,10 @@
 import UserRepository from '../repositories/user/UserRepository';
+import * as bcrypt from 'bcrypt';
+import { seedData1, seedData2 } from './routes/Constants';
 
 const userRepository: UserRepository = new UserRepository();
 export default () => {
-    userRepository.count()
+    userRepository.countData()
         .then((res) => {
             if (res === 0) {
                 console.log('Inserting Data');

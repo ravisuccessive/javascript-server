@@ -1,1 +1,1 @@
-export {default as configurations } from './configuration';
+export { default as configurations } from './configuration';
