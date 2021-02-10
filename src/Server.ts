@@ -3,6 +3,7 @@ import * as bodyparser from 'body-parser';
 import { notFoundRoute, errorHandler } from './libs/routes';
 import Database from './libs/Database';
 import mainRouter from './Router';
+import * as cors from 'cors';
 
 class Server {
     private app;
@@ -24,6 +25,7 @@ class Server {
             res.send( 'I am Ok' );
             next();
         });
+        this.app.use((cors()));
         this.app.use('/api', mainRouter);
         this.app.use(notFoundRoute);
         this.app.use(errorHandler);

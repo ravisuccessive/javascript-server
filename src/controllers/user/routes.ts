@@ -13,7 +13,7 @@ UserRouter.route('/')
 .delete( UserController.delete);
 
 UserRouter.route('/me')
-.get(authMiddleWare ( permissions.getUsers, 'read' ), UserController.me);
+.get(authMiddleWare ( permissions.getUsers, 'read' ), UserController.profile);
 
 UserRouter.route('/login')
 .post( validationHandler ( Validation.login) , UserController.login );
